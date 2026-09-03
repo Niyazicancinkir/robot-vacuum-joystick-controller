@@ -1,0 +1,2 @@
+python-miio==0.5.12
+pygame-ce==2.5.8

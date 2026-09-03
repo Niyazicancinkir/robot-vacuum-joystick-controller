@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Xiaomi S20 robot süpürgesini joystick ile kontrol etmek için hızlı başlangıç rehberi.">
+  <title>S20 / Remote control lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#overview" aria-label="S20 Remote Control ana sayfa">
+        <span class="brand-mark"><span></span><span></span><span></span></span>
+        <span>S20 / RC LAB</span>
+      </a>
+      <div class="topbar-meta"><span class="status-dot"></span><span>LOCAL CONTROL GUIDE</span><span class="meta-divider"></span><span>v1.0</span></div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="sidebar-label">İÇİNDEKİLER</div>
+        <nav id="main-nav" aria-label="Rehber bölümleri">
+          <a class="nav-item active" href="#overview"><span class="nav-index">00</span><span>Genel bakış</span></a>
+          <a class="nav-item" href="#architecture"><span class="nav-index">01</span><span>Mimari mantığı</span></a>
+          <a class="nav-item" href="#setup"><span class="nav-index">02</span><span>Gereksinimler</span></a>
+          <a class="nav-item" href="#code"><span class="nav-index">03</span><span>Kod laboratuvarı</span></a>
+        </nav>
+        <div class="sidebar-footer">
+          <span class="foot-label">CİHAZ</span>
+          <strong>Xiaomi S20</strong>
+          <span class="foot-label">BAĞLANTI</span>
+          <strong>UDP / miIO</strong>
+        </div>
+      </aside>
+
+      <main class="content">
+        <section class="hero page-section" id="overview">
+          <div class="eyebrow"><span class="eyebrow-line"></span> ZERO-LAG ARCHITECTURE</div>
+          <h1>Robot süpürgeni<br><em>kumanda et.</em></h1>
+          <p class="hero-copy">Xiaomi S20'i bilgisayar ve oyun kolu üzerinden, mobil uygulama akıcılığında kontrol etmek için pratik Python rehberi.</p>
+          <div class="hero-actions"><a class="primary-button" href="#setup">Kuruluma başla <span>↗</span></a><a class="text-button" href="#architecture">Sistemi keşfet <span>↓</span></a></div>
+          <div class="hero-visual" aria-label="Robot süpürge ve joystick bağlantı şeması">
+            <div class="visual-grid"></div>
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <div class="vacuum-device"><div class="vacuum-top"><span class="vacuum-lidar"></span><span class="vacuum-line"></span></div><div class="vacuum-shadow"></div></div>
+            <div class="connection-line"><span class="pulse"></span></div>
+            <div class="joystick"><div class="stick"></div><span class="joystick-button one"></span><span class="joystick-button two"></span></div>
+            <div class="visual-label label-device">S20 / ONLINE</div><div class="visual-label label-input">GAMEPAD INPUT</div>
+          </div>
+          <div class="scroll-cue"><span>SCROLL TO EXPLORE</span><span class="cue-line"></span></div>
+        </section>
+
+        <section class="page-section architecture-section" id="architecture">
+          <div class="section-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> 01 / AKIŞ</div><h2>Gecikme nerede<br><em>kayboluyor?</em></h2></div><p>Her harekette yeni bağlantı açmak yerine tek bir iletişim tüneli kuruyoruz. Küçük hız ve yön paketleri bu açık kanal üzerinden akar.</p></div>
+          <div class="flow-diagram">
+            <div class="flow-node"><span class="node-number">01</span><strong>HANDSHAKE</strong><small>Tek seferlik kimlik doğrulama</small></div><span class="flow-arrow">→</span>
+            <div class="flow-node highlighted"><span class="node-number">02</span><strong>UDP / miIO</strong><small>Hızlı ve hafif paket akışı</small></div><span class="flow-arrow">→</span>
+            <div class="flow-node"><span class="node-number">03</span><strong>RC MODE</strong><small>Otonom sürüşü devre dışı bırak</small></div><span class="flow-arrow">→</span>
+            <div class="flow-node"><span class="node-number">04</span><strong>STREAM</strong><small>Sürekli joystick komutu</small></div>
+          </div>
+          <div class="principle-note"><span class="note-symbol">!</span><p><strong>Temel prensip:</strong> Bağlantı yalnızca bir kez açılır. Süpürge, komutlar kesildiğinde güvenlik gereği otomatik olarak durur.</p></div>
+        </section>
+
+        <section class="page-section setup-section" id="setup">
+          <div class="section-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> 02 / HAZIRLIK</div><h2>İhtiyacın olan<br><em>parçalar.</em></h2></div><p>Başlamadan önce bağlantı bilgilerini ve donanımı hazırla. Kurulum, mevcut Python ortamında birkaç dakikada tamamlanır.</p></div>
+          <div class="requirements-grid">
+            <article class="requirement"><span class="req-icon">PY</span><div><h3>Python 3.8+</h3><p>Çalışma ortamı</p></div></article>
+            <article class="requirement"><span class="req-icon network">⌁</span><div><h3>Aynı Wi-Fi</h3><p>Robot ve bilgisayar</p></div></article>
+            <article class="requirement"><span class="req-icon key">◆</span><div><h3>IP + Token</h3><p>Yerel erişim bilgileri</p></div></article>
+            <article class="requirement"><span class="req-icon gamepad">✦</span><div><h3>Gamepad</h3><p>Xbox / PlayStation</p></div></article>
+          </div>
+          <div class="install-block"><div class="install-top"><span>TERMINAL</span><span class="copy-hint">KOPYALAMAK İÇİN TIKLA</span></div><button class="copy-button" data-copy="python -m pip install -r requirements.txt" aria-label="Kurulum komutunu kopyala">⧉</button><code>python -m pip install -r <span>requirements.txt</span></code><span class="install-caption">Gerekli kütüphaneleri yükle</span></div>
+        </section>
+
+        <section class="page-section code-section" id="code">
+          <div class="section-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> 03 / UYGULAMA</div><h2>Kumandayı<br><em>çalıştır.</em></h2></div><p>İskeleti kopyala, cihaz bilgilerini gir ve joystick eksenlerini robotun hız komutlarına bağla.</p></div>
+          <div class="code-panel"><div class="code-tabs"><span class="active-tab">controller.py</span><span>PYTHON</span><a class="download-link" href="controller.py" download>PY DOSYASINI İNDİR ↓</a><button class="copy-button code-copy" data-copy="python controller.py --ip 192.168.1.42 --token YOUR_32_CHAR_TOKEN" aria-label="Çalıştırma komutunu kopyala">⧉</button></div><pre><code><span class="keyword">from</span> miio <span class="keyword">import</span> Device
+      <span class="keyword">import</span> os
+      <span class="keyword">import</span> time
+      <span class="keyword">import</span> pygame
+      DEVICE_ID = <span class="string">"1069182766"</span>
+      SIID_DIRECTION = <span class="number">7</span>
+      PIID_DIRECTION = <span class="number">16</span>
+
+      <span class="keyword">def</span> <span class="function">send_direction</span>(vacuum, direction):
+        vacuum.send(<span class="string">"set_properties"</span>, [{<span class="string">"did"</span>: DEVICE_ID,
+          <span class="string">"siid"</span>: SIID_DIRECTION, <span class="string">"piid"</span>: PIID_DIRECTION, <span class="string">"value"</span>: direction}])
+
+      <span class="comment"># 1=ileri, 2=sol, 3=sağ, 4=geri, 5=dur, 10=çıkış</span>
+      send_direction(vacuum, <span class="number">1</span>)</code></pre></div>
+          <div class="safety-row"><span class="safety-icon">✓</span><span>S20 sürüşü: <code>set_properties</code> ile <code>siid=7</code>, <code>piid=16</code> kullanılır.</span><a href="#overview">Başa dön ↑</a></div>
+        </section>
+        <footer><span>S20 / RC LAB</span><span>LOCAL NETWORK • PYTHON • GAMEPAD</span></footer>
+      </main>
+    </div>
+  </div>
+  <div class="toast" role="status" aria-live="polite">Komut kopyalandı</div>
+  <script src="app.js"></script>
+</body>
+</html>

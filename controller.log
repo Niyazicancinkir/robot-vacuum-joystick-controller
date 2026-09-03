@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\Users\niyaz\Videos\youtube\robot-vacuum-joystick-controller\controller.py", line 108, in run
+    main()
+    ~~~~^^
+  File "<string>", line 1, in <lambda>
+    import controller; controller.main=lambda: (_ for _ in ()).throw(RuntimeError('test hata')); controller.input=lambda prompt: print(prompt); controller.run()
+                                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 1, in <genexpr>
+    import controller; controller.main=lambda: (_ for _ in ()).throw(RuntimeError('test hata')); controller.input=lambda prompt: print(prompt); controller.run()
+RuntimeError: test hata
+
